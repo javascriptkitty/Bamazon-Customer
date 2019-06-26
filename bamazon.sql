@@ -10,12 +10,12 @@ CREATE TABLE products (
   department_name VARCHAR(45) NULL,
   price DECIMAL(10,2) NULL,
   stock_quantity INT(10),
-  PRIMARY KEY (id)
+  PRIMARY KEY (item_id)
 );
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES ('heater', 'heating & cooling', 80.5, 122),
-('electric fireplace', 'heating & cooling',189.99, 6),
+VALUES ('heater', 'Heating & Cooling', 80.5, 122),
+('electric fireplace', 'Heating & Cooling',189.99, 6),
 ('blanket', 'Bedding', 30.0, 26),
 ('home sauna', 'Lawn & Garden', 2280.0, 2),
 ('hot tub', 'Lawn & Garden', 5099.0, 3),
@@ -23,5 +23,4 @@ VALUES ('heater', 'heating & cooling', 80.5, 122),
 ('pajama set', "Women's clothing", 34.99, 18),
 ('house slippers', "Women's clothing", 20.99, 12),
 ('fur rug', "Home & Kitchen", 28.45, 10),
-
-('dried mangoes', "Grocery", 19.99, 24)
+('dried mangoes', "Grocery", 19.99, 24);
