@@ -32,4 +32,46 @@ function showlist() {
 
 function start() {
   showlist();
+
+  connection.query("SELECT * FROM products", function(err, res) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          message: "Choose the ID of the item you would like to buy",
+          choices: function() {
+            var choiceArray = [];
+            for (var i = 0; i < res.length; i++) {
+              choiceArray.push(res[i].item_id);
+            }
+            return choiceArray;
+          },
+          name: "id"
+        },
+        {
+          type: "input",
+          message: "How many units of the product would you like to buy?",
+          name: "quantity"
+        }
+      ])
+      .then(function(response) {
+        var itemId = response.id;
+        var itemQuantity = response.quantity;
+
+        // find the row for the given item id
+        var row = res.find(el => el.item_id === itemId);
+
+        // console.log(res[i].item_id);
+        if (parseInt(itemQuantity) > row.stock_quantity) {
+          console.log("Insufficient quantity!");
+          showlist();
+        } else {
+          console.log(
+            `Successfully purchesed ${itemQuantity} ${row.product_name}'s`
+          );
+          updateTable();
+        }
+      });
+  });
 }
