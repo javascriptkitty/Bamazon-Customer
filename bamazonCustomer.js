@@ -50,9 +50,17 @@ function start() {
           name: "id"
         },
         {
-          type: "input",
+          type: "number",
           message: "How many units of the product would you like to buy?",
-          name: "quantity"
+          name: "quantity",
+          validate: function(value) {
+            var reg = /^\d+$/;
+            if (reg.test(value) && value > 0) {
+              return true;
+            } else {
+              return "\nQuantity should be a positive integer\n";
+            }
+          }
         }
       ])
       .then(function(response) {
@@ -62,16 +70,20 @@ function start() {
         // find the row for the given item id
         var row = res.find(el => el.item_id === itemId);
 
-        // console.log(res[i].item_id);
         if (itemQuantity > row.stock_quantity) {
-          console.log("Insufficient quantity!");
-          showlist();
+          console.log(
+            "\nInsufficient quantity in stock for quantity requested!\n"
+          );
+          newPurchase();
         } else {
           console.log(
-            `Successfully purchesed ${itemQuantity} ${row.product_name}'s`
+            `\nSuccessfully purchased ${itemQuantity} ${
+              row.product_name
+            }(s), your total $ was ${itemQuantity * row.price} \n`
           );
-          //   updateTable();
-          var query = connection.query(
+
+          newPurchase();
+          connection.query(
             "UPDATE products SET ? WHERE ?",
 
             [
@@ -84,34 +96,30 @@ function start() {
             ],
             function(err, res) {
               if (err) throw err;
-              console.log(res.affectedRows + " updated!\n");
+              //    console.log(res.affectedRows + " updated!\n");
             }
           );
-          console.log(query.sql);
+          //  console.log(query.sql);
         }
       });
   });
 }
 
-// function updateTable() {
-//   console.log("Updating table...\n");
-//   var query = connection.query(
-//     "UPDATE products SET ? WHERE ?",
-
-//     [
-//       {
-//         item_id: response.id
-//       },
-//       {
-//         stock_quantity: stock_quantity - itemQuantity
-//       }
-//     ],
-//     function(err, res) {
-//       if (err) throw err;
-//       console.log(res.affectedRows + " updated!\n");
-//     }
-//   );
-
-//   // logs the actual query being run
-//   console.log(query.sql);
-// }
+function newPurchase() {
+  inquirer
+    .prompt([
+      {
+        type: "confirm",
+        message: "Would you like to purchase something else?",
+        name: "newPurchase"
+      }
+    ])
+    .then(function(response) {
+      if (response.newPurchase) {
+        start();
+      } else {
+        console.log("\nThank you, bye!\n");
+        process.exit();
+      }
+    });
+}
