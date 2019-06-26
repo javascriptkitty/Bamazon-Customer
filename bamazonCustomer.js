@@ -57,21 +57,61 @@ function start() {
       ])
       .then(function(response) {
         var itemId = response.id;
-        var itemQuantity = response.quantity;
+        var itemQuantity = parseInt(response.quantity);
 
         // find the row for the given item id
         var row = res.find(el => el.item_id === itemId);
 
         // console.log(res[i].item_id);
-        if (parseInt(itemQuantity) > row.stock_quantity) {
+        if (itemQuantity > row.stock_quantity) {
           console.log("Insufficient quantity!");
           showlist();
         } else {
           console.log(
             `Successfully purchesed ${itemQuantity} ${row.product_name}'s`
           );
-          updateTable();
+          //   updateTable();
+          var query = connection.query(
+            "UPDATE products SET ? WHERE ?",
+
+            [
+              {
+                stock_quantity: row.stock_quantity - itemQuantity
+              },
+              {
+                item_id: response.id
+              }
+            ],
+            function(err, res) {
+              if (err) throw err;
+              console.log(res.affectedRows + " updated!\n");
+            }
+          );
+          console.log(query.sql);
         }
       });
   });
 }
+
+// function updateTable() {
+//   console.log("Updating table...\n");
+//   var query = connection.query(
+//     "UPDATE products SET ? WHERE ?",
+
+//     [
+//       {
+//         item_id: response.id
+//       },
+//       {
+//         stock_quantity: stock_quantity - itemQuantity
+//       }
+//     ],
+//     function(err, res) {
+//       if (err) throw err;
+//       console.log(res.affectedRows + " updated!\n");
+//     }
+//   );
+
+//   // logs the actual query being run
+//   console.log(query.sql);
+// }
