@@ -213,11 +213,10 @@ function addProduct() {
       }
     ])
     .then(function(response) {
-      var query = connection.query(
+      connection.query(
         "INSERT INTO products SET ?",
 
         {
-          //   item_id: ,
           product_name: response.product,
           department_name: response.department,
           price: response.price,
@@ -229,5 +228,4 @@ function addProduct() {
         }
       );
     });
-  start();
 }
