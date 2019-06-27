@@ -19,7 +19,7 @@ connection.connect(function(err) {
 function showlist() {
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
-    console.log(res);
+    // console.log(res);
     var table = new Table({
       head: ["ID", "Name", "Department", "Price", "Quantity"]
     });
