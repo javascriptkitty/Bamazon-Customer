@@ -1,6 +1,6 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
-
+var Table = require("cli-table2");
 // const chalk = require("chalk");
 
 var connection = mysql.createConnection({
@@ -20,13 +20,19 @@ function showlist() {
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
     console.log(res);
+    var table = new Table({
+      head: ["ID", "Name", "Department", "Price", "Quantity"]
+    });
     for (var i = 0; i < res.length; i++) {
-      console.log(
-        `ID: ${i + 1} \nName: ${res[i].product_name}\n Department: ${
-          res[i].department_name
-        }\nPrice: ${res[i].price}\nQuantity: ${res[i].stock_quantity}\n`
-      );
+      table.push([
+        i + 1,
+        res[i].product_name,
+        res[i].department_name,
+        res[i].price,
+        res[i].stock_quantity
+      ]);
     }
+    console.log(table.toString());
   });
 }
 
