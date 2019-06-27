@@ -7,12 +7,12 @@ Bamazon is an Amazon-like storefront which utilizes MySQL and node.js. The app w
 - Customer View
   allows users to view and purchase products.
 
-![Site screenshort](https://github.com/javascriptkitty/lBamazon-Customer/blob/master/images/customer.gif)
+![Site screenshort](https://github.com/javascriptkitty/Bamazon-Customer/blob/master/images/customer.gif?raw=true)
 
 - Manager View
   allows users to view, update and add new products.
 
-  ![Site screenshort](https://github.com/javascriptkitty/lBamazon-Customer/blob/master/images/manager.gif)
+  ![Site screenshort](https://github.com/javascriptkitty/Bamazon-Customer/blob/master/images/manager.gif?raw=true)
 
 ## Technoligies Used
 

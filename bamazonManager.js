@@ -84,7 +84,7 @@ function showLowInventory() {
     var table = new Table({
       head: ["ID", "Name", "Department", "Price", "Quantity"]
     });
-    for (var i = 1; i < res.length; i++) {
+    for (var i = 0; i < res.length; i++) {
       table.push([
         res[i].item_id,
         res[i].product_name,
