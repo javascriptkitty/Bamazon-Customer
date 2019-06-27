@@ -17,7 +17,7 @@ connection.connect(function(err) {
 });
 
 function start() {
-  console.log("What would you like to do?");
+  console.log("\nWhat would you like to do?\n");
   inquirer
     .prompt([
       {
@@ -156,4 +156,78 @@ function addInventory() {
         start();
       });
   });
+}
+
+function addProduct() {
+  console.log("NEW PRODUCT");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Product:",
+        name: "product",
+        validate: function(value) {
+          if (value) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      {
+        type: "input",
+        message: "Department:",
+        name: "department",
+        validate: function(value) {
+          if (value) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      {
+        type: "number",
+        message: "Price:",
+        name: "price",
+        validate: function(value) {
+          if (value > 0) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      {
+        type: "number",
+        message: "Quantity:",
+        name: "quantity",
+        validate: function(value) {
+          var reg = /^\d+$/;
+          if (reg.test(value) && value > 0) {
+            return true;
+          } else {
+            return "\nQuantity should be a positive integer\n";
+          }
+        }
+      }
+    ])
+    .then(function(response) {
+      var query = connection.query(
+        "INSERT INTO products SET ?",
+
+        {
+          //   item_id: ,
+          product_name: response.product,
+          department_name: response.department,
+          price: response.price,
+          stock_quantity: response.quantity
+        },
+        function(err, res) {
+          if (err) throw err;
+          console.log("\nproduct inserted!\n");
+        }
+      );
+    });
+  start();
 }
